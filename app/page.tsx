@@ -10,6 +10,7 @@ import { supabase } from "@/lib/supabase"
 
 type Guest = {
   name: string
+  is_user: boolean
   userType: string
   company: string
   event: string
@@ -49,8 +50,9 @@ export default function Home() {
           tipo_usuario, 
           event_id, 
           guest: guest_id (
-            name, 
-            company_razon_social, 
+            name,
+            is_user,
+            company_razon_social,
             tipo_usuario,
             company: company_id (razon_social),
             executive: executive_id (name, last_name, user_type)
@@ -63,33 +65,20 @@ export default function Home() {
           console.error('Error fetching events:', errorEventGuest);
         } else {
 
-          const mappedGuests = dataEventGuest.map((eventGuest)=> ({            
-            name: eventGuest.name 
-            //@ts-expect-error prisa
-            ?? eventGuest.guest?.name 
-            //@ts-expect-error prisa
-            ?? (eventGuest.guest?.executive ? `${eventGuest.guest.executive.name} ${eventGuest.guest.executive.last_name}` : "Desconocido"),
-        
-            userType: eventGuest.tipo_usuario 
-            //@ts-expect-error prisa
-            ?? eventGuest.guest?.tipo_usuario 
-            //@ts-expect-error prisa
-            ?? eventGuest.guest?.executive?.user_type 
-            ?? "Desconocido",
-            
-            company: eventGuest.company_razon_social 
-            //@ts-expect-error prisa
-            ?? eventGuest.guest?.company_razon_social 
-            //@ts-expect-error prisa
-            ?? eventGuest.guest?.company?.razon_social 
-            ?? "Externo",
-            
+          const mappedGuests = dataEventGuest.map((eventGuest)=> ({
+            // @ts-expect-error prisa
+            name: eventGuest.guest.is_user ? `${eventGuest.guest.executive.name} ${eventGuest.guest.executive.last_name}` : eventGuest.guest.name,
+            // @ts-expect-error prisa
+            userType: eventGuest.guest.is_user ? eventGuest.guest.executive.user_type : eventGuest.guest.tipo_usuario,
+            // @ts-expect-error prisa
+            company: eventGuest.guest.is_user ? eventGuest.guest.company?.razon_social : eventGuest.guest.company_razon_social,
             event: dataEvent2.find(event => event.id === eventGuest.event_id)?.abbreviation || "Desconocido",
             observation: "",                    
           }));
 
-          const filteredGuests = mappedGuests.filter(guest => guest.company !== "APOYO CONSULTORÍA S.A.C.");
+          const filteredGuests = mappedGuests.filter(guest => guest.userType !== "AC");
 
+          // @ts-expect-error prisa
           setUsers(filteredGuests);
         }      
     }
