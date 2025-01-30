@@ -53,7 +53,7 @@ export default function Home() {
             company_razon_social, 
             tipo_usuario,
             company: company_id (razon_social),
-            executive: executive_id (name, last_name, user_type)
+            executive: executive_id (name, last_name, user_type, observation)
             )
           `)
         .in('event_id', eventIds)
@@ -85,7 +85,9 @@ export default function Home() {
             ?? "Externo",
             
             event: dataEvent2.find(event => event.id === eventGuest.event_id)?.abbreviation || "Desconocido",
-            observation: "",                    
+            
+            //@ts-expect-error prisa
+            observation: eventGuest.guest?.executive?.observation ? "A" : "",
           }));
 
           const filteredGuests = mappedGuests.filter(guest => guest.company !== "APOYO CONSULTORÍA S.A.C.");
