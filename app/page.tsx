@@ -159,7 +159,7 @@ export default function Home() {
             </div>
           </div>
           <CardContent className="w-full">
-            <UserTable users={filteredUsers} />
+            <UserTable users={filteredUsers} selectedEvent={selectedEvent} />
           </CardContent>
 
           <CardHeader className="text-center">
