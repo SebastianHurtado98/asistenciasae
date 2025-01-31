@@ -10,30 +10,35 @@ interface User {
 
 interface UserTableProps {
   users: User[]
+  selectedEvent: string | null
 }
 
-export function UserTable({ users }: UserTableProps) {
+export function UserTable({ users, selectedEvent }: UserTableProps) {
   return (
 <div className="rounded-md border-2 border-gray-300 overflow-hidden">
 <Table className="w-full text-[10px] md:text-sm lg:text-base">
 <TableHeader>
-      <TableRow className="bg-gray-200">
+      <TableRow className="border-b divide-x bg-gray-200">
         <TableHead className="w-[40px] px-1 py-1 md:px-3 md:py-2 text-center">N°</TableHead>
         <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Nombre</TableHead>
         <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Tipo</TableHead>
         <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Empresa</TableHead>
+        {selectedEvent === null && (
         <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Evento</TableHead>
+        )}
         <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Obs.</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       {users.map((user, index) => (
-        <TableRow key={index}>
+        <TableRow className="border-b divide-x" key={index}>
           <TableCell className="px-1 py-1 md:px-3 md:py-2  text-center">{index + 1}</TableCell>
           <TableCell className="px-1 py-1 md:px-3 md:py-2  text-center">{user.name}</TableCell>
           <TableCell className="px-1 py-1 md:px-3 md:py-2  text-center">{user.userType}</TableCell>
           <TableCell className="px-1 py-1 md:px-3 md:py-2  text-center">{user.company}</TableCell>
+          {selectedEvent === null && (
           <TableCell className="px-1 py-1 md:px-3 md:py-2  text-center">{user.event}</TableCell>
+          )}
           <TableCell className="px-1 py-1 md:px-3 md:py-2  text-center">
             {user.observation && (
               <span

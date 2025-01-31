@@ -31,7 +31,8 @@ export default function Home() {
     const { data: dataEvent2, error: errorEvent2 } = await supabase
       .from('event')
       .select('id, abbreviation')
-      .eq('macro_event_id', 5);
+      .eq('macro_event_id', 5)
+      .order('date_hour', { ascending: true })
 
     console.log("dataEvent2", dataEvent2)
 
@@ -145,7 +146,7 @@ export default function Home() {
             <CardTitle>Usuarios registrados</CardTitle>
           </CardHeader>
           <CardContent className="w-full">
-            <UserTable users={filteredUsers} />
+            <UserTable users={filteredUsers} selectedEvent={selectedEvent} />
           </CardContent>
           <div className="mt-0 text-sm md:text-base flex flex-col items-center">
           <p className="text-center mb-2">Leyenda de observación:</p>

@@ -40,8 +40,8 @@ export function TotalsTable({ data, events }: TotalsTableProps) {
     <div className="rounded-md border-2 border-gray-300 overflow-x-auto">
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="text-center">Tipo de Usuario / Evento</TableHead>
+        <TableRow className="border-b divide-x">
+        <TableHead className="text-center">Tipo de Usuario / Evento</TableHead>
             {!singleEvent &&
             events.map((event) => (
               <TableHead key={event} className="text-center">
@@ -54,7 +54,7 @@ export function TotalsTable({ data, events }: TotalsTableProps) {
         </TableHeader>
         <TableBody>
           {userTypes.map((userType) => (
-            <TableRow key={userType}>
+            <TableRow className="border-b divide-x" key={userType}>
               <TableCell className="font-medium text-center">{userType}</TableCell>
               {!singleEvent &&
               events.map((event) => (
@@ -66,7 +66,7 @@ export function TotalsTable({ data, events }: TotalsTableProps) {
               <TableCell className="text-center font-medium">{userTypeTotals[userType]}</TableCell>
             </TableRow>
           ))}
-          <TableRow className="border-t-2">
+          <TableRow className="border-b divide-x border-t-2">
             <TableCell className="font-medium text-center">Total</TableCell>
             {!singleEvent &&
             events.map((event) => (
