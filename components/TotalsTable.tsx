@@ -13,6 +13,7 @@ interface TotalsTableProps {
 
 export function TotalsTable({ data, events }: TotalsTableProps) {
   const userTypes = Object.keys(data)
+  const singleEvent = events.length === 1;
 
   // Calcular totales por evento
   const eventTotals = events.reduce(
@@ -44,11 +45,13 @@ export function TotalsTable({ data, events }: TotalsTableProps) {
         <TableHeader>
           <TableRow>
             <TableHead className="text-center">Tipo de Usuario / Evento</TableHead>
-            {events.map((event) => (
+            {!singleEvent &&
+            events.map((event) => (
               <TableHead key={event} className="text-center">
                 {event}
               </TableHead>
-            ))}
+            ))
+            }
             <TableHead className="text-center">Total</TableHead>
           </TableRow>
         </TableHeader>
@@ -56,21 +59,25 @@ export function TotalsTable({ data, events }: TotalsTableProps) {
           {userTypes.map((userType) => (
             <TableRow key={userType}>
               <TableCell className="font-medium text-center">{userType}</TableCell>
-              {events.map((event) => (
+              {!singleEvent &&
+              events.map((event) => (
                 <TableCell key={event} className="text-center">
                   {data[userType][event] || 0}
                 </TableCell>
-              ))}
+              ))
+              }
               <TableCell className="text-center font-medium">{userTypeTotals[userType]}</TableCell>
             </TableRow>
           ))}
           <TableRow className="border-t-2">
             <TableCell className="font-medium text-center">Total</TableCell>
-            {events.map((event) => (
+            {!singleEvent &&
+            events.map((event) => (
               <TableCell key={event} className="text-center font-medium">
                 {eventTotals[event]}
               </TableCell>
-            ))}
+            ))
+            }
             <TableCell className="text-center font-bold">{grandTotal}</TableCell>
           </TableRow>
         </TableBody>
