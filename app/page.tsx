@@ -144,6 +144,9 @@ export default function Home() {
         <CardHeader className="text-center pb-0">
             <CardTitle>Usuarios registrados</CardTitle>
           </CardHeader>
+          <CardContent className="w-full">
+            <UserTable users={filteredUsers} />
+          </CardContent>
           <div className="mt-0 text-sm md:text-base flex flex-col items-center">
           <p className="text-center mb-2">Leyenda de observación:</p>
             <div className="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-2">
@@ -158,16 +161,15 @@ export default function Home() {
               </span>
             </div>
           </div>
-          <CardContent className="w-full">
-            <UserTable users={filteredUsers} />
-          </CardContent>
-
           <CardHeader className="text-center">
             <CardTitle>Totales por evento</CardTitle>
           </CardHeader>
           <CardContent className="w-full">
             <TotalsTable data={filteredTotalsData} events={filteredEvents} />
           </CardContent>
+          <div className="mt-0 text-sm md:text-base flex flex-col items-center">
+          <p className="text-center mb-2">Nota: no incluye AC</p>
+          </div>
       </CardContent>
     </Card>
   )

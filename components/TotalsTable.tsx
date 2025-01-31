@@ -38,9 +38,6 @@ export function TotalsTable({ data, events }: TotalsTableProps) {
 
   return (
     <div className="rounded-md border-2 border-gray-300 overflow-x-auto">
-      <div className="text-right py-2 pr-4 bg-gray-100 text-gray-600 text-sm md:text-base">
-        Nota: no incluye AC
-      </div>
       <Table>
         <TableHeader>
           <TableRow>
