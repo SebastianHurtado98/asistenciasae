@@ -108,7 +108,7 @@ export default function Home() {
         <CardDescription>Resumen de usuarios registrados y totales por evento</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex justify-center space-x-4">
+      <div className="flex flex-wrap justify-center gap-2 p-2">
           <Button
             style={
               selectedEvent === null
@@ -133,6 +133,10 @@ export default function Home() {
             </Button>
           ))}
         </div>
+
+
+      
+
 
         <Card>
           <CardHeader className="text-center">
