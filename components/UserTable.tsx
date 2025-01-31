@@ -15,6 +15,12 @@ interface UserTableProps {
 export function UserTable({ users }: UserTableProps) {
   return (
 <div className="rounded-md border-2 border-gray-300 overflow-hidden">
+  <div className="text-right py-2 bg-gray-100 text-sm md:text-base">
+    Leyenda de obs:
+    <span className="px-2 py-1 rounded bg-red-100 text-red-800 mx-2">A: Cliente en alerta</span>
+    <span className="px-2 py-1 rounded bg-green-100 text-green-800 mx-2">P: Cliente potencial</span>
+    <span className="px-2 py-1 rounded bg-blue-100 text-blue-800 mx-2">N: Cliente nuevo</span>
+  </div>
 <Table className="w-full text-[10px] md:text-sm lg:text-base">
 <TableHeader>
       <TableRow className="bg-gray-200">

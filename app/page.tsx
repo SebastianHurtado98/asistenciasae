@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { generateTotalsData } from "@/utils/generateTotalsData"
 import { supabase } from "@/lib/supabase"
+import Image from "next/image"
 
 type Guest = {
   name: string
@@ -104,11 +105,17 @@ export default function Home() {
   return (
     <Card className="w-full">
       <CardHeader className="text-center">
-        <CardTitle>SAE | Registrados | Encuentro mensual</CardTitle>
-        <CardDescription>Resumen de usuarios registrados y totales por evento</CardDescription>
+        <Image 
+              src="/SAE-asistencia.jpg"
+              alt="SAE Logo Azul"
+              width={768}
+              height={192}
+              className="mb-4 w-120 sm:w-192 mx-auto"
+          />
+        <CardDescription>Resumen de usuarios registrados</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-      <div className="flex flex-wrap justify-center gap-2 p-2">
+      <CardContent className="space-y-6 px-2">
+      <div className="flex flex-wrap justify-center gap-2">
           <Button
             style={
               selectedEvent === null
@@ -134,27 +141,19 @@ export default function Home() {
           ))}
         </div>
 
-
-      
-
-
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle>Usuarios Registrados</CardTitle>
+      <CardHeader className="text-center">
+            <CardTitle>Usuarios registrados</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="w-full">
             <UserTable users={filteredUsers} />
           </CardContent>
-        </Card>
 
-        <Card>
           <CardHeader className="text-center">
-            <CardTitle>Totales por Evento</CardTitle>
+            <CardTitle>Totales por evento</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="w-full">
             <TotalsTable data={filteredTotalsData} events={filteredEvents} />
           </CardContent>
-        </Card>
       </CardContent>
     </Card>
   )
