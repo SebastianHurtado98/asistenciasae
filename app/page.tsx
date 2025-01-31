@@ -141,9 +141,23 @@ export default function Home() {
           ))}
         </div>
 
-      <CardHeader className="text-center">
+        <CardHeader className="text-center pb-0">
             <CardTitle>Usuarios registrados</CardTitle>
           </CardHeader>
+          <div className="mt-0 text-sm md:text-base flex flex-col items-center">
+          <p className="text-center mb-2">Leyenda de observación:</p>
+            <div className="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-2">
+              <span className="px-2 py-1 rounded bg-red-100 text-red-800 text-center">
+                A: Cliente en alerta
+              </span>
+              <span className="px-2 py-1 rounded bg-green-100 text-green-800 text-center">
+                P: Cliente potencial
+              </span>
+              <span className="px-2 py-1 rounded bg-blue-100 text-blue-800 text-center">
+                N: Cliente nuevo
+              </span>
+            </div>
+          </div>
           <CardContent className="w-full">
             <UserTable users={filteredUsers} />
           </CardContent>
