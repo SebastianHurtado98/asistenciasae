@@ -74,7 +74,8 @@ export default function Home() {
             return {
             // @ts-expect-error prisa
             name: eventGuest.guest.is_user ? `${eventGuest.guest.executive.name} ${eventGuest.guest.executive.last_name}` : eventGuest.guest.name,
-            userType: userType,
+            // @ts-expect-error prisa
+            userType: userType.toLowerCase().split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
             // @ts-expect-error prisa
             company: eventGuest.company_razon_social || eventGuest.guest?.company_razon_social || eventGuest.guest?.company?.razon_social || eventGuest.guest?.executive?.company?.razon_social || "",
             event: dataEvent2.find(event => event.id === eventGuest.event_id)?.abbreviation || "Desconocido",
