@@ -59,7 +59,12 @@ export function UserTable({ users, selectedEvent }: UserTableProps) {
           </TableHeader>
           <TableBody>
             {filteredUsers.map((user, index) => (
-              <TableRow className="border-b divide-x" key={index}>
+              <TableRow
+                key={index}
+                className={`border-b divide-x ${
+                  user.observation === "A" ? "bg-red-100" : ""
+                }`}
+              >
                 <TableCell className="px-1 py-1 md:px-3 md:py-2 text-center">
                   {index + 1}
                 </TableCell>
