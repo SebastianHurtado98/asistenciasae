@@ -67,18 +67,21 @@ export default function Home() {
           console.error('Error fetching events:', errorEventGuest);
         } else {
 
-          const mappedGuests = dataEventGuest.map((eventGuest)=> ({
+          const mappedGuests = dataEventGuest.map((eventGuest)=> {
+            // @ts-expect-error prisa
+            const userType = eventGuest.guest.is_user ? eventGuest.guest.executive.user_type : eventGuest.guest.tipo_usuario;
+
+            return {
             // @ts-expect-error prisa
             name: eventGuest.guest.is_user ? `${eventGuest.guest.executive.name} ${eventGuest.guest.executive.last_name}` : eventGuest.guest.name,
-            // @ts-expect-error prisa
-            userType: eventGuest.guest.is_user ? eventGuest.guest.executive.user_type : eventGuest.guest.tipo_usuario,
+            userType: userType,
             // @ts-expect-error prisa
             company: eventGuest.guest.is_user ? eventGuest.guest.company?.razon_social : eventGuest.guest.company_razon_social,
             event: dataEvent2.find(event => event.id === eventGuest.event_id)?.abbreviation || "Desconocido",
             
             //@ts-expect-error prisa
-            observation: eventGuest.guest?.executive?.observation ? "A" : "",
-          }));
+            observation: eventGuest.guest?.executive?.observation ? "A" : userType === "Free Trial" ? "P" : "",
+          }});
 
           const filteredGuests = mappedGuests.filter(guest => guest.userType !== "AC");
 
