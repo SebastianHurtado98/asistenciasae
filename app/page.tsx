@@ -84,7 +84,7 @@ export default function Home() {
             observation: eventGuest.guest?.executive?.observation ? "A" : userType === "Free Trial" ? "P" : "",
           }});
 
-          const filteredGuests = mappedGuests.filter(guest => guest.userType !== "AC");
+          const filteredGuests = mappedGuests.filter(guest => guest.userType.toLowerCase() !== "ac");
 
           // @ts-expect-error prisa
           setUsers(filteredGuests);
