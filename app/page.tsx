@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { generateTotalsData } from "@/utils/generateTotalsData"
 import { supabase } from "@/lib/supabase"
 import Image from "next/image"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 type Guest = {
   name: string
@@ -120,6 +121,42 @@ export default function Home() {
         <CardDescription>Resumen de usuarios registrados</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 px-2">
+      <Table className="max-w-lg mx-auto mb-2 border border-gray-300 border-collapse">
+          <TableHeader>
+            <TableRow>
+              <TableHead></TableHead>
+              {events.map((event) => (
+                <TableHead key={event} className="text-center">
+                  {event}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+            <TableCell>
+              % de Aforo lleno
+            </TableCell>
+              {events.map((event) => {
+                const total = Object.values(totalsData).reduce((sum, userType) => sum + (userType[event] || 0), 0)
+                const percentage = ((total / 86) * 100).toFixed(0)
+                return (
+                  <TableCell key={event} className="text-center">
+                    {event === "Jue AM"
+                      ? `${total} *`
+                      : Number.parseFloat(percentage) >= 100
+                        ? "Aforo lleno"
+                        : `${percentage}%`}
+                  </TableCell>
+                )
+              })}
+            </TableRow>
+          </TableBody>
+        </Table>
+        <div className="text-center mx-auto text-sm mb-4">
+          * Aforo abierto por ser evento virtual
+        </div>
+        <div className="flex flex-wrap justify-center gap-2"></div>
       <div className="flex flex-wrap justify-center gap-2">
           <Button
             style={
