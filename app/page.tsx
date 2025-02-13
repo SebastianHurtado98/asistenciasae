@@ -29,10 +29,20 @@ export default function Home() {
   }, [])
 
   async function fetchEvents() {
+    const { data: dataActiveMacro, error: errorActiveMacro } = await supabase
+    .from('active_macro')
+    .select('*')
+    .limit(1)
+    .single();
+
+    if (errorActiveMacro) {
+      console.error('Error fetching macro_events:', errorActiveMacro)
+    }
+
     const { data: dataEvent2, error: errorEvent2 } = await supabase
       .from('event')
       .select('id, abbreviation')
-      .eq('macro_event_id', 5)
+      .eq('macro_event_id', dataActiveMacro.macro_event_id)
       .order('date_hour', { ascending: true })
 
     console.log("dataEvent2", dataEvent2)
