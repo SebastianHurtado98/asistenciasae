@@ -67,8 +67,9 @@ export default function Home() {
             is_user,
             company_razon_social,
             tipo_usuario,
-            company: company_id (razon_social),
-            executive: executive_id (name, last_name, user_type, start_date, observation, company: company_id (razon_social))
+            start_date,
+            observation,
+            company: company_id (razon_social)
             )
           `)
         .in('event_id', eventIds)
@@ -80,25 +81,25 @@ export default function Home() {
 
           const mappedGuests = dataEventGuest.map((eventGuest)=> {
             // @ts-expect-error prisa
-            const userType = eventGuest.guest.is_user ? eventGuest.guest.executive.user_type : eventGuest.guest.tipo_usuario;
+            const userType = eventGuest.guest.tipo_usuario;
 
             // @ts-expect-error prisa
-            const startDate = new Date(eventGuest.guest?.executive?.start_date);
+            const startDate = new Date(eventGuest.guest?.start_date);
             const sixMonthsAgo = new Date();
             sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
             return {
             // @ts-expect-error prisa
-            name: eventGuest.guest.is_user ? `${eventGuest.guest.executive.name} ${eventGuest.guest.executive.last_name}` : eventGuest.guest.name,
+            name: eventGuest.guest.name,
             // @ts-expect-error prisa
             userType: userType.toLowerCase().split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
             // @ts-expect-error prisa
-            company: eventGuest.company_razon_social || eventGuest.guest?.company_razon_social || eventGuest.guest?.company?.razon_social || eventGuest.guest?.executive?.company?.razon_social || "",
+            company: eventGuest.company_razon_social || eventGuest.guest?.company_razon_social || eventGuest.guest?.company?.razon_social || "",
             event: dataEvent2.find(event => event.id === eventGuest.event_id)?.abbreviation || "Desconocido",
             
             
             //@ts-expect-error prisa
-            observation: (eventGuest.guest?.executive?.observation && startDate >= sixMonthsAgo ) ? "N" : (eventGuest.guest?.executive?.observation ? "A" : (userType === "Free Trial" ? "P" : "")),
+            observation: (eventGuest.guest?.observation && startDate >= sixMonthsAgo ) ? "N" : (eventGuest.guest?.observation ? "A" : (userType === "Free Trial" ? "P" : "")),
           }});
 
           const filteredGuests = mappedGuests.filter(guest => guest.userType.toLowerCase() !== "ac");
