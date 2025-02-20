@@ -40,7 +40,6 @@ export default function Home() {
     .select('*')
     .limit(1)
     .single();
-    // forcing push
 
     if (errorActiveMacro) {
       console.error('Error fetching macro_events:', errorActiveMacro)
