@@ -73,6 +73,7 @@ export default function Home() {
           guest: guest_id (
             name,
             last_name,
+            apodo,
             is_user,
             company_razon_social,
             tipo_usuario,
@@ -99,7 +100,7 @@ export default function Home() {
 
             return {
             // @ts-expect-error prisa
-            name: eventGuest.guest.name + " " + eventGuest.guest.last_name,
+            name: (eventGuest.guest.apodo ?? eventGuest.guest.name.split(" ")[0]) + " " + eventGuest.guest.last_name,
             // @ts-expect-error prisa
             userType: userType.toLowerCase().split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
             // @ts-expect-error prisa
