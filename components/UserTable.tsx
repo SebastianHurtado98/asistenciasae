@@ -48,7 +48,7 @@ export function UserTable({ users, selectedEvent }: UserTableProps) {
           <TableHeader>
             <TableRow className="border-b divide-x bg-gray-200">
               <TableHead className="w-[40px] px-1 py-1 md:px-3 md:py-2 text-center">N°</TableHead>
-              <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Nombre</TableHead>
+              <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Nombre y Apellido</TableHead>
               <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Tipo</TableHead>
               <TableHead className="px-1 py-1 md:px-3 md:py-2 text-center">Empresa</TableHead>
               {selectedEvent === null && (

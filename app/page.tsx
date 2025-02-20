@@ -18,10 +18,16 @@ type Guest = {
   event: string
   observation: string
 }
+type Event = {
+  id: number
+  abbreviation: string
+  event_type: string
+}
 
 export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null)
   const [events, setEvents] = useState<string[]>([])
+  const [eventsData, setEventsData] = useState<Event[]>([])
   const [users, setUsers] = useState<Guest[]>([])
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export default function Home() {
 
     const { data: dataEvent2, error: errorEvent2 } = await supabase
       .from('event')
-      .select('id, abbreviation')
+      .select('*')
       .eq('macro_event_id', dataActiveMacro.macro_event_id)
       .order('date_hour', { ascending: true })
 
@@ -54,6 +60,7 @@ export default function Home() {
     if (dataEvent2) {
       const eventIds = dataEvent2.map(event => event.id);
       setEvents(dataEvent2.map(event => event.abbreviation))
+      setEventsData(dataEvent2)
     
       const { data: dataEventGuest, error: errorEventGuest } = await supabase
         .from('event_guest')
@@ -147,9 +154,9 @@ export default function Home() {
           <TableHeader>
             <TableRow>
               <TableHead className="border border-gray-300 bg-gray-200"></TableHead>
-              {events.map((event) => (
-                <TableHead key={event} className="text-center border border-gray-300 bg-gray-200">
-                  {event === "Jue AM" ? "Jue AM*" : event}
+              {eventsData.map((event) => (
+                <TableHead key={event.id} className="text-center border border-gray-300 bg-gray-200">
+                  {event.event_type === "Virtual" ? event.abbreviation+"*" : event.abbreviation}
                 </TableHead>
               ))}
             </TableRow>
@@ -157,14 +164,14 @@ export default function Home() {
           <TableBody>
             <TableRow>
             <TableCell className="border border-gray-300">
-              % de Aforo lleno
+              {eventsData.every(event => event.event_type === "Virtual") ? 'N° de usuarios registrados' : '% de Aforo lleno'}
             </TableCell>
-              {events.map((event) => {
-                const total = Object.values(totalsData).reduce((sum, userType) => sum + (userType[event] || 0), 0)
+              {eventsData.map((event) => {
+                const total = Object.values(totalsData).reduce((sum, userType) => sum + (userType[event.abbreviation] || 0), 0)
                 const percentage = ((total / 86) * 100).toFixed(0)
                 return (
-                  <TableCell key={event} className="text-center border border-gray-300">
-                    {event === "Jue AM"
+                  <TableCell key={event.id} className="text-center border border-gray-300">
+                    {event.event_type === "Virtual"
                       ? `${total}`
                       : Number.parseFloat(percentage) >= 100
                         ? "Aforo lleno"
@@ -179,6 +186,7 @@ export default function Home() {
           * Aforo abierto por ser evento virtual
         </div>
         <div className="border-t border-gray-300 my-4"></div>
+        { events.length > 1 && (
         <div className="flex flex-wrap justify-center gap-2">
           <Button
             style={
@@ -204,6 +212,7 @@ export default function Home() {
             </Button>
           ))}
         </div>
+        )}
 
         <CardHeader className="text-center pb-0">
             <CardTitle>Usuarios registrados</CardTitle>
