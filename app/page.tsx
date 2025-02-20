@@ -125,6 +125,8 @@ export default function Home() {
 
   const filteredEvents = selectedEvent ? [selectedEvent] : events
 
+  console.log("events", events)
+
   return (
     <Card className="w-full">
       <CardHeader className="text-center">
@@ -135,6 +137,8 @@ export default function Home() {
               height={192}
               className="mb-4 w-120 sm:w-192 mx-auto"
           />
+          <br></br>
+        <CardTitle>SAE Especial</CardTitle>
         <CardDescription>Resumen de usuarios registrados</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 px-2">
