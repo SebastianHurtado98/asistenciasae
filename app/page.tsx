@@ -23,32 +23,52 @@ type Event = {
   abbreviation: string
   event_type: string
 }
+type MacroEvent = {
+  id: number
+  name: string
+  service: string
+  type: string
+  active: boolean
+  abbreviation: string
+}
 
 export default function Home() {
+  const [selectedMacroEvent, setSelectedMacroEvent] = useState<number | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null)
   const [events, setEvents] = useState<string[]>([])
   const [eventsData, setEventsData] = useState<Event[]>([])
+  const [macroEventsData, setMacroEventsData] = useState<MacroEvent[]>([])
   const [users, setUsers] = useState<Guest[]>([])
 
   useEffect(() => {
-    fetchEvents()
+    fetchActiveMacroEvents()
   }, [])
 
-  async function fetchEvents() {
-    const { data: dataActiveMacro, error: errorActiveMacro } = await supabase
-    .from('active_macro')
-    .select('*')
-    .limit(1)
-    .single();
+  useEffect(() => {
+    fetchEvents()
+  }, [selectedMacroEvent])
 
-    if (errorActiveMacro) {
-      console.error('Error fetching macro_events:', errorActiveMacro)
+  async function fetchActiveMacroEvents() {
+    const { data: dataMacroEvent, error: errorMacroEvent } = await supabase
+    .from('macro_event')
+    .select('*')
+    .eq('active', true)
+    .order('created_at', { ascending: true })
+    if (errorMacroEvent) {
+      console.error('Error fetching macro_events:', errorMacroEvent)
+    } else {
+      console.log("dataMacroEvent", dataMacroEvent)
+      setMacroEventsData(dataMacroEvent || [])
+      setSelectedMacroEvent(dataMacroEvent[0].id)
     }
+  }
+
+  async function fetchEvents() {
 
     const { data: dataEvent2, error: errorEvent2 } = await supabase
       .from('event')
       .select('*')
-      .eq('macro_event_id', dataActiveMacro.macro_event_id)
+      .eq('macro_event_id', selectedMacroEvent)
       .order('date_hour', { ascending: true })
 
     console.log("dataEvent2", dataEvent2)
@@ -99,7 +119,7 @@ export default function Home() {
 
             return {
             // @ts-expect-error prisa
-            name: (eventGuest.guest.apodo ?? eventGuest.guest.name.split(" ")[0]) + " " + eventGuest.guest.last_name,
+            name: (eventGuest.guest.apodo ?? eventGuest.guest.name.split(" ")[0]) + " " + (eventGuest.guest.last_name || ""),
             // @ts-expect-error prisa
             userType: userType.toLowerCase().split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" "),
             // @ts-expect-error prisa
@@ -147,9 +167,26 @@ export default function Home() {
               className="mb-4 w-120 sm:w-192 mx-auto"
           />
           <br></br>
-        <CardTitle>SAE Especial</CardTitle>
+        <CardTitle>{macroEventsData.find(event => event.id === selectedMacroEvent)?.name || ""}</CardTitle>
         <CardDescription>Resumen de usuarios registrados</CardDescription>
       </CardHeader>
+        { macroEventsData.length > 1 && (
+        <div className="flex flex-wrap justify-center gap-2">
+          {macroEventsData.map((macroEvent) => (
+            <Button
+              key={macroEvent.id}
+              style={
+                selectedMacroEvent === macroEvent.id
+                  ? { backgroundColor: "#006f96", color: "white" }
+                  : { backgroundColor: "#ffffff", color: "black" }
+              }
+              onClick={() => setSelectedMacroEvent(macroEvent.id)}
+            >
+              {macroEvent.abbreviation}
+            </Button>
+          ))}
+        </div>
+        )}
       <CardContent className="space-y-6 px-2">
       <div className="mt-4"></div>
       <Table className="max-w-lg mx-auto mb-0 border border-gray-300 border-collapse">
